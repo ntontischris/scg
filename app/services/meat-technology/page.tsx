@@ -11,7 +11,6 @@ import {
   Award,
   Microscope,
   Utensils,
-  Briefcase,
 } from "lucide-react"
 
 const technologies = [
