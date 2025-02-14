@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { motion } from 'framer-motion'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -131,12 +131,12 @@ export default function BlogPage() {
               className="group relative bg-gray-800/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transform transition-all duration-500 hover:shadow-blue-400/10 cursor-pointer"
               onClick={() => handleReadMore(article.id)}
             >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <div className="absolute inset-0 bg-blue-600 mix-blend-multiply opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-                <img
-                  src={article.fotografies || '/placeholder-blog.jpg'}
+              <div className="relative h-48 w-full overflow-hidden rounded-lg">
+                <Image
+                  src={article.fotografies}
                   alt={article.titlos}
-                  className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <div className="p-8">

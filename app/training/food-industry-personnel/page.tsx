@@ -1,8 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import Image from "next/image"
-import { Briefcase, ChevronRight, Beaker, Sandwich, ClipboardList } from "lucide-react"
+import { ChevronRight, Beaker, Sandwich, ClipboardList } from "lucide-react"
 
 const topics = [
   {
@@ -123,4 +122,3 @@ export default function FoodIndustryPersonnelPage() {
     </div>
   )
 }
-

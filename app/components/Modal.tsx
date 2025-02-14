@@ -34,8 +34,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, imageSrc, imageAlt }) =>
           >
             <X size={24} />
           </button>
-          <div className="overflow-auto max-h-[90vh]">
-            <img src={imageSrc || "/placeholder.svg"} alt={imageAlt} className="w-full h-auto object-contain" />
+          <div className="relative overflow-auto max-h-[90vh] w-[80vw] h-[80vh]">
+            <Image
+              src={imageSrc || "/placeholder.svg"}
+              alt={imageAlt}
+              fill
+              className="object-contain"
+              sizes="80vw"
+            />
           </div>
         </motion.div>
       </motion.div>
@@ -44,4 +50,3 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, imageSrc, imageAlt }) =>
 }
 
 export default Modal
-

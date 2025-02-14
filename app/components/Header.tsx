@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, ChevronDown, ChevronUp, Search, Phone, Mail } from "lucide-react"
+import { Menu, X, ChevronDown, ChevronUp, Phone, Mail } from "lucide-react"
 
 const mainNavItems = [
   { title: "Αρχική", href: "/" },
@@ -53,9 +53,13 @@ const mainNavItems = [
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null)
-  const [expandedSubmenu, setExpandedSubmenu] = useState<string | null>(null)
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null)
   const pathname = usePathname()
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+    setOpenSubmenu(null)
+  }, [pathname])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -133,15 +137,14 @@ const Header = () => {
                   <li
                     key={item.title}
                     className="relative group"
-                    onMouseEnter={() => setActiveSubmenu(item.title)}
-                    onMouseLeave={() => setActiveSubmenu(null)}
+                    onMouseEnter={() => setOpenSubmenu(item.title)}
+                    onMouseLeave={() => setOpenSubmenu(null)}
                   >
                     <div className="flex items-center">
                       <Link
                         href={item.href}
                         onClick={() => {
-                          setExpandedSubmenu(null)
-                          setActiveSubmenu(null)
+                          setOpenSubmenu(null)
                         }}
                       >
                         <span
@@ -154,10 +157,10 @@ const Header = () => {
                       </Link>
                       {item.subItems && (
                         <button
-                          onClick={() => setExpandedSubmenu(expandedSubmenu === item.title ? null : item.title)}
+                          onClick={() => setOpenSubmenu(openSubmenu === item.title ? null : item.title)}
                           className="ml-1 text-blue-400 hover:text-blue-600"
                         >
-                          {expandedSubmenu === item.title ? (
+                          {openSubmenu === item.title ? (
                             <ChevronUp className="w-4 h-4" />
                           ) : (
                             <ChevronDown className="w-4 h-4" />
@@ -168,7 +171,7 @@ const Header = () => {
 
                     {item.subItems && (
                       <AnimatePresence>
-                        {expandedSubmenu === item.title && (
+                        {openSubmenu === item.title && (
                           <motion.div
                             className="absolute left-0 mt-2 w-56 bg-gray-800 rounded-lg shadow-xl py-2 overflow-hidden"
                             initial={{ opacity: 0, height: 0 }}
@@ -180,7 +183,7 @@ const Header = () => {
                               <Link
                                 key={subItem.title}
                                 href={subItem.href}
-                                onClick={() => setExpandedSubmenu(null)}
+                                onClick={() => setOpenSubmenu(null)}
                                 className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-400"
                               >
                                 {subItem.title}
@@ -235,7 +238,7 @@ const Header = () => {
                       <Link
                         href={item.href}
                         onClick={() => {
-                          setExpandedSubmenu(null)
+                          setOpenSubmenu(null)
                           setIsMobileMenuOpen(false)
                         }}
                       >
@@ -243,10 +246,10 @@ const Header = () => {
                       </Link>
                       {item.subItems && (
                         <button
-                          onClick={() => setExpandedSubmenu(expandedSubmenu === item.title ? null : item.title)}
+                          onClick={() => setOpenSubmenu(openSubmenu === item.title ? null : item.title)}
                           className="text-white hover:text-blue-200"
                         >
-                          {expandedSubmenu === item.title ? (
+                          {openSubmenu === item.title ? (
                             <ChevronUp className="w-4 h-4" />
                           ) : (
                             <ChevronDown className="w-4 h-4" />
@@ -256,7 +259,7 @@ const Header = () => {
                     </div>
                     {item.subItems && (
                       <AnimatePresence>
-                        {expandedSubmenu === item.title && (
+                        {openSubmenu === item.title && (
                           <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: "auto" }}
@@ -268,7 +271,7 @@ const Header = () => {
                                 key={subItem.title}
                                 href={subItem.href}
                                 onClick={() => {
-                                  setExpandedSubmenu(null)
+                                  setOpenSubmenu(null)
                                   setIsMobileMenuOpen(false)
                                 }}
                                 className="block px-8 py-2 text-sm text-white hover:bg-blue-500 hover:text-white"

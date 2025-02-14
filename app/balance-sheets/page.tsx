@@ -9,13 +9,29 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+interface FinancialData {
+  assets: {
+    current: number;
+    fixed: number;
+    total: number;
+  };
+  liabilities: {
+    current: number;
+    longTerm: number;
+    total: number;
+  };
+  equity: {
+    total: number;
+  };
+}
+
 interface FinancialStatement {
   id: number;
   year: number;
   title: string;
   description: string;
   file_url: string;
-  financial_data: any;
+  financial_data: FinancialData;
   created_at: string;
 }
 
@@ -162,7 +178,7 @@ export default function BalanceSheets() {
                       <div className="text-center">
                         <p className="text-gray-400 mb-2">Σύνολο Ιδίων Κεφαλαίων</p>
                         <p className="text-2xl font-bold text-blue-400">
-                          {Number(statement.financial_data.equity).toLocaleString('el-GR')}€
+                          {Number(statement.financial_data.equity.total).toLocaleString('el-GR')}€
                         </p>
                       </div>
                     </div>

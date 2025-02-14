@@ -6,7 +6,6 @@ import Image from "next/image"
 import {
   ChevronLeft,
   ChevronRight,
-  BeefIcon as Meat,
   Thermometer,
   Clock,
   Award,
@@ -306,4 +305,3 @@ export default function MeatTechnologyPage() {
     </div>
   )
 }
-

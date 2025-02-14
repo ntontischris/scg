@@ -66,7 +66,7 @@ export default function ContactPage() {
         subject: '',
         message: ''
       })
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error:', error)
       toast.error('Υπήρξε ένα πρόβλημα κατά την αποστολή του μηνύματος.')
     } finally {

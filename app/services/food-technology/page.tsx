@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { ChevronLeft, ChevronRight, FlaskRoundIcon as Flask, Leaf, ShieldCheck, TrendingUp, Zap } from "lucide-react"
+import { ChevronLeft, ChevronRight, FlaskRoundIcon as Flask, ShieldCheck, TrendingUp } from "lucide-react"
 
 const images = [
   {
@@ -281,4 +281,3 @@ export default function FoodTechnologyPage() {
     </div>
   )
 }
-

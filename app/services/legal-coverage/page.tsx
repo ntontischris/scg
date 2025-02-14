@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Scale, AlertTriangle, FileText, Briefcase, Users } from 'lucide-react'
+import { Scale, FileText, Users } from 'lucide-react'
 
 const legalServices = [
   {
@@ -86,4 +86,3 @@ export default function LegalCoveragePage() {
     </div>
   )
 }
-

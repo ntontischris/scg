@@ -115,7 +115,7 @@ const Footer = () => {
             >
               <h4 className="text-base sm:text-lg font-semibold text-blue-400 mb-3 sm:mb-4">{section.title}</h4>
               <ul className="space-y-2 text-sm sm:text-base">
-                {section.links.map((link, linkIndex) => (
+                {section.links.map((link) => (
                   <motion.li key={link.name} whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 300 }}>
                     <Link href={link.href} className="hover:text-blue-400 transition-colors duration-300">
                       {link.name}
@@ -174,4 +174,3 @@ const Footer = () => {
 }
 
 export default Footer
-

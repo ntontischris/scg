@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
-import { motion } from "framer-motion"
+import Image from 'next/image'
 
 const images = [
   {
@@ -34,8 +34,6 @@ const images = [
 ]
 
 export default function MediaPage() {
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
-
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -89,11 +87,15 @@ export default function MediaPage() {
                 >
                   <div className="relative aspect-[4/3] mb-4 cursor-zoom-in">
                     <Zoom>
-                      <img
-                        src={image.src}
-                        alt={image.alt}
-                        className="rounded-lg w-full h-full object-cover"
-                      />
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          className="rounded-lg object-cover"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                      </div>
                     </Zoom>
                   </div>
                   <h3 className="text-lg font-semibold mb-2 text-blue-400">{image.title}</h3>
