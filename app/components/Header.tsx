@@ -42,11 +42,7 @@ const mainNavItems = [
     ],
   },
   { title: "Οικονομικά στοιχεία", href: "/balance-sheets" },
-  {
-    title: "Media",
-    href: "/media",
-  },
-  { title: "Blog", href: "/blog" },
+  { title: "Δημοσιεύσεις", href: "/publications" },
   { title: "Επικοινωνία", href: "/contact" },
 ]
 
