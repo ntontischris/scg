@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cpanel-start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@radix-ui/react-scroll-area": "^1.2.3",
@@ -18,7 +19,7 @@
     "embla-carousel-react": "^8.5.2",
     "framer-motion": "^12.4.2",
     "lucide-react": "^0.475.0",
-    "next": "14.2.16",
+    "next": "^14.2.24",
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.5.1",
