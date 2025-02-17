@@ -11,6 +11,7 @@ import {
   Award,
   Microscope,
   Utensils,
+  Briefcase,
 } from "lucide-react"
 
 const technologies = [
@@ -57,7 +58,7 @@ const images = [
     src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/scg%20products08-4eCEpCzoV7hW6sVH8ZrOg9TUOrWMdI.webp",
     alt: "Φρέσκα μενταγιόν κρέατος",
     title: "Ποιοτικές Πρώτες Ύλες",
-    description: "Επιλεγμένα κομμάτια κρέατ��ς για άριστο αποτέλεσμα",
+    description: "Επιλεγμένα κομμάτια κρέατος για άριστο αποτέλεσμα",
   },
   {
     src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/scg%20products09-fDCrpiK3QYrmzSkWSNWDN6pSoib61T.webp",
