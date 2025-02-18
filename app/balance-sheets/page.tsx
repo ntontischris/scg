@@ -9,30 +9,11 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-interface FinancialData {
-  assets: {
-    current: number;
-    fixed: number;
-    total: number;
-  };
-  liabilities: {
-    current: number;
-    longTerm: number;
-    total: number;
-  };
-  equity: {
-    total: number;
-  };
-}
-
 interface FinancialStatement {
   id: number;
   year: number;
   title: string;
-  description: string;
   file_url: string;
-  financial_data: FinancialData;
-  created_at: string;
 }
 
 export default function BalanceSheets() {
@@ -44,7 +25,7 @@ export default function BalanceSheets() {
       try {
         const { data, error } = await supabase
           .from('financial_statements')
-          .select('*')
+          .select('id, year, title, file_url')
           .order('year', { ascending: false });
 
         if (error) {
@@ -52,6 +33,7 @@ export default function BalanceSheets() {
           return;
         }
 
+        console.log('Raw data from Supabase:', data);
         setStatements(data || []);
       } catch (err) {
         console.error('Error:', err);
@@ -76,9 +58,9 @@ export default function BalanceSheets() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gray-800"
+      className="min-h-screen bg-gray-800 py-16 px-4 sm:px-6 lg:px-8"
     >
-      <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -91,116 +73,83 @@ export default function BalanceSheets() {
           </p>
         </motion.div>
 
-        <div className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
           {statements.map((statement, index) => (
             <motion.div
               key={statement.id}
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-gray-700 rounded-xl shadow-xl overflow-hidden"
+              whileHover={{ 
+                y: -10,
+                transition: { duration: 0.2 }
+              }}
+              className="group relative bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 rounded-2xl shadow-2xl overflow-hidden transform-gpu"
             >
-              <div className="p-8">
-                <div className="flex justify-between items-start mb-8">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-100 mb-2">{statement.title}</h2>
-                    <p className="text-gray-300">{statement.description}</p>
+              {/* Glowing effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              {/* Glass effect border */}
+              <div className="absolute inset-0.5 bg-gradient-to-br from-white/5 to-transparent rounded-2xl"></div>
+
+              <div className="relative p-8">
+                <div className="flex flex-col space-y-4">
+                  <div className="flex justify-between items-start">
+                    <motion.h2 
+                      className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      {statement.title}
+                    </motion.h2>
+                    <motion.span 
+                      className="bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-blue-500/20"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      {statement.year}
+                    </motion.span>
                   </div>
-                  <div className="bg-blue-900/30 text-blue-400 px-4 py-2 rounded-full font-semibold">
-                    {statement.year}
-                  </div>
+
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => window.open(statement.file_url, '_blank')}
+                    className="w-full mt-6 relative group/button"
+                  >
+                    {/* Button gradient background */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl opacity-75 group-hover/button:opacity-100 transition-opacity duration-200"></div>
+                    
+                    {/* Button content */}
+                    <div className="relative px-6 py-3 flex items-center justify-center space-x-3 text-white font-semibold">
+                      <svg
+                        className="w-5 h-5 transform group-hover/button:scale-110 transition-transform duration-200"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                      <span className="transform group-hover/button:translate-x-1 transition-transform duration-200">
+                        Προβολή Αρχείου
+                      </span>
+                    </div>
+                  </motion.button>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
-                  {/* Ενεργητικό */}
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="bg-gray-800/50 rounded-xl p-6 shadow-sm border border-gray-600"
-                  >
-                    <h3 className="text-lg font-semibold text-blue-400 mb-4">Ενεργητικό</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <p className="text-gray-400">Κυκλοφορούν</p>
-                        <p className="text-lg font-semibold text-gray-100">
-                          {Number(statement.financial_data.assets.current).toLocaleString('el-GR')}€
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-gray-400">Πάγιο</p>
-                        <p className="text-lg font-semibold text-gray-100">
-                          {Number(statement.financial_data.assets.fixed).toLocaleString('el-GR')}€
-                        </p>
-                      </div>
-                      <div className="pt-4 border-t border-gray-600">
-                        <p className="text-gray-400">Σύνολο</p>
-                        <p className="text-xl font-bold text-blue-400">
-                          {Number(statement.financial_data.assets.total).toLocaleString('el-GR')}€
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                  {/* Παθητικό */}
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="bg-gray-800/50 rounded-xl p-6 shadow-sm border border-gray-600"
-                  >
-                    <h3 className="text-lg font-semibold text-blue-400 mb-4">Παθητικό</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <p className="text-gray-400">Βραχυπρόθεσμες Υποχρεώσεις</p>
-                        <p className="text-lg font-semibold text-gray-100">
-                          {Number(statement.financial_data.liabilities.current).toLocaleString('el-GR')}€
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-gray-400">Μακροπρόθεσμες Υποχρεώσεις</p>
-                        <p className="text-lg font-semibold text-gray-100">
-                          {Number(statement.financial_data.liabilities.longTerm).toLocaleString('el-GR')}€
-                        </p>
-                      </div>
-                      <div className="pt-4 border-t border-gray-600">
-                        <p className="text-gray-400">Σύνολο</p>
-                        <p className="text-xl font-bold text-blue-400">
-                          {Number(statement.financial_data.liabilities.total).toLocaleString('el-GR')}€
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                  {/* Ίδια Κεφάλαια */}
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="bg-gray-800/50 rounded-xl p-6 shadow-sm border border-gray-600"
-                  >
-                    <h3 className="text-lg font-semibold text-blue-400 mb-4">Ίδια Κεφάλαια</h3>
-                    <div className="flex items-center justify-center h-full">
-                      <div className="text-center">
-                        <p className="text-gray-400 mb-2">Σύνολο Ιδίων Κεφαλαίων</p>
-                        <p className="text-2xl font-bold text-blue-400">
-                          {Number(statement.financial_data.equity.total).toLocaleString('el-GR')}€
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="mt-8 flex justify-end"
-                >
-                  <a
-                    href={statement.file_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
-                  >
-                    Προβολή PDF
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
-                </motion.div>
+                {/* Decorative elements */}
+                <div className="absolute top-0 right-0 -mt-6 -mr-6 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl"></div>
+                <div className="absolute bottom-0 left-0 -mb-6 -ml-6 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl"></div>
               </div>
             </motion.div>
           ))}
